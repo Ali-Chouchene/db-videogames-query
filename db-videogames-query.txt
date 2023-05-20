@@ -256,5 +256,26 @@ order by count(r.rating) desc;
 
 12- Selezionare la software house che ha vinto più premi tra il 2015 e il 2016 (software house id : potrebbe uscire 3 o 1, sono entrambi a 3)
 
+select sh.id 
+from software_houses sh  
+join videogames v 
+on sh.id = v.software_house_id 
+join award_videogame av 
+on v.id = av.videogame_id 
+where av.`year` between 2015 and 2016
+group by sh.id,av.videogame_id
+order by av.videogame_id
+limit 1;
+
 13- Selezionare le categorie dei videogame i quali hanno una media recensioni inferiore a 1.5 (10)
 
+select cv.category_id  
+from categories c 
+join category_videogame cv  
+on c.id = cv.category_id
+join videogames v 
+on v.id = cv.videogame_id  
+join reviews r 
+on v.id = r.videogame_id 
+where (SELECT AVG(r.rating) FROM reviews ) < 1.5
+group by cv.category_id;
